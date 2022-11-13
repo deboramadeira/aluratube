@@ -1,3 +1,4 @@
+import React from "react";
 import config from "../config.json";
 import styled from "styled-components";
 import { CSSReset } from "../src/components/CSSReset";
@@ -8,27 +9,29 @@ import { StyledTimeline } from "../src/components/Timeline";
 
 
 function HomePage() {
-    const mensagem = "";
-    const estilosdaHomePage = { 
-
+    const estilosDaHomePage = {
     };
-
-    console.log(config.playlists);
+    const [valorDoFiltro, setValorDoFiltro] = React.useState("");
 
     return (
         <>
             <CSSReset />
-            <div style={estilosdaHomePage}>
-                <Menu></Menu>
-                <Header></Header>
-                <Timeline playlists={config.playlists}>
+            <div style={{
+                display: "flex",
+                flexDirection: "column",
+                flex: 1,
+
+            }}>
+                <Menu valorDoFiltro={valorDoFiltro} setValorDoFiltro={setValorDoFiltro}/>
+                <Header/>
+                <Timeline searchValue={valorDoFiltro} playlists={config.playlists}>
                     Conteúdo
                 </Timeline>
 
             </div>
         </>
     );
-}
+        }
 
 export default HomePage
 
@@ -40,7 +43,6 @@ const StyledHeader = styled.div`
         border-radius: 50%;
 }
 .user-info{
-    margin-top: 50px;
     display: flex;
     align-items: center;
     width: 100%;
@@ -48,10 +50,18 @@ const StyledHeader = styled.div`
     gap: 16px
 }
 `;
+const StyledBanner = styled.div`
+background-color: blue;
+background-image: url("https://images.unsplash.com/photo-1641156803026-0b819059b04d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1632&q=80");
+height: 230px;
+background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+`;
 function Header() {
     return (
         <StyledHeader>
-            <img src="banner" />
+            <StyledBanner />
             <section className="user-info">
                 <img src={`https://github.com/${config.github}.png`} />
                 <div>
@@ -65,26 +75,32 @@ function Header() {
             </section>
         </StyledHeader>
     )
-};
+}
 
-function Timeline(props) {
-    console.log("Dentro do componente", props.playlists);
+function Timeline({searchValue, ...props}) {
+    
     const playlistNames = Object.keys(props.playlists);
+    return(
 
-    return (
         <StyledTimeline>
-            {playlistNames.map(function (playlistNames) {
-                const vídeos = props.playlists[playlistNames];
+            {playlistNames.map((playlistName) => {
+                const videos = props.playlists[playlistName];
                 return (
-                    <section>
-                        <h2>({playlistNames})</h2>
+                    <section key={playlistName}>
+                        <h2>{playlistName}</h2>
                         <div>
-                            {vídeos.map((vídeo) => {
+                            {videos.filter((video) => {
+                                console.log('oi');
+                                const titleNormalized = video.title.toLowerCase();
+                                const searchValueNormalized = searchValue.toLowerCase();
+                                return titleNormalized.includes(searchValueNormalized)
+                            })
+                            .map((video) => {
                                 return (
-                                    <a href={vídeo.url}>
-                                        <img src={vídeo.thumb} />
+                                    <a key={video.url} href={video.url}>
+                                        <img src={video.thumb} />
                                         <span>
-                                            {vídeo.title}
+                                            {video.title}
                                         </span>
                                     </a>
                                 )
@@ -96,4 +112,4 @@ function Timeline(props) {
             })}
         </StyledTimeline>
     )
-};
+}
