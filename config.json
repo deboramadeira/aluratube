@@ -2,6 +2,21 @@
     "name": "Débora Madeira",
     "job": "Software Developer Student",
     "github": "deboramadeira",
+    "banner": "/bg.png",
+    "favorites": {
+		"AluraTubes Favoritos": [
+			{
+				"github": "omariosouto",
+				"name": "@omariosouto",
+				"url": "https://github.com/omariosouto"
+			},
+			{
+				"github": "peas",
+				"name": "@peas",
+				"url": "https://github.com/peas"
+			}
+		]
+	},
     "playlists": {
         "Harry Potter": [
             {

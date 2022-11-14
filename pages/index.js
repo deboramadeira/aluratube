@@ -1,21 +1,36 @@
 import React from "react";
 import config from "../config.json";
 import styled from "styled-components";
-import { CSSReset } from "../src/components/CSSReset";
 import Menu from "../src/components/Menu";
 import { StyledTimeline } from "../src/components/Timeline";
-
-
-
+import { videoService } from "../src/components/services/videoService";
 
 function HomePage() {
-    const estilosDaHomePage = {
-    };
+    const service = videoService();
     const [valorDoFiltro, setValorDoFiltro] = React.useState("");
+    const [playlists, setPlaylists] = React.useState({});     // config.playlists
+
+    React.useEffect(() => {
+        console.log("useEffect");
+        service
+            .getAllVideos()
+            .then((dados) => {
+                console.log(dados.data);
+                const novasPlaylists = {};
+                dados.data.forEach((video) => {
+                    if (!novasPlaylists[video.playlist]) novasPlaylists[video.playlist] = [];
+                    novasPlaylists[video.playlist] = [
+                        video,
+                        ...novasPlaylists[video.playlist],
+                    ];
+                });
+
+                setPlaylists(novasPlaylists);
+            });
+    }, []);
 
     return (
         <>
-            <CSSReset />
             <div style={{
                 display: "flex",
                 flexDirection: "column",
@@ -24,7 +39,7 @@ function HomePage() {
             }}>
                 <Menu valorDoFiltro={valorDoFiltro} setValorDoFiltro={setValorDoFiltro}/>
                 <Header/>
-                <Timeline searchValue={valorDoFiltro} playlists={config.playlists}>
+                <Timeline searchValue={valorDoFiltro} playlists={playlists}>
                     Conteúdo
                 </Timeline>
 
@@ -50,18 +65,19 @@ const StyledHeader = styled.div`
     gap: 16px
 }
 `;
+
 const StyledBanner = styled.div`
-background-color: blue;
-background-image: url("https://images.unsplash.com/photo-1641156803026-0b819059b04d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1632&q=80");
+//background-color: blue;
+background-image: url(${config.banner});
+background-size: cover;
 height: 230px;
-background-repeat: no-repeat;
-  background-attachment: fixed;
-  background-size: cover;
+
 `;
+
 function Header() {
     return (
         <StyledHeader>
-            <StyledBanner />
+            <StyledBanner/>
             <section className="user-info">
                 <img src={`https://github.com/${config.github}.png`} />
                 <div>
