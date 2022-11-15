@@ -21,21 +21,21 @@ function useForm(propsDoForm) {
         }
     };
 }
-const PROJECT_URL= "https://zhbpcdeszkgdxkfempid.supabase.co";
-const PUBLIC_KEY= "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpoYnBjZGVzemtnZHhrZmVtcGlkIiwicm9sZSI6ImFub24iLCJpYXQiOjE2Njg0NTg0MDgsImV4cCI6MTk4NDAzNDQwOH0.6BhyjVGBcto9sjw8qFPwe-B8msLZh13EmZ3sXUPDX8Y";
-const supabase= createClient('PROJECT_URL', 'PUBLIC_KEY')
+
+const PROJECT_URL = "https://okstarojudwxmjdcuhea.supabase.co";
+const PUBLIC_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9rc3Rhcm9qdWR3eG1qZGN1aGVhIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NjQ4OTU1OTUsImV4cCI6MTk4MDQ3MTU5NX0.shktap50ImF9SqhqcsugSpg38trqKe7aNEP4RvhpQE0";
+const supabase = createClient(PROJECT_URL, PUBLIC_KEY);
 
 function getThumbnail(url) {
     return `https://img.youtube.com/vi/${url.split("v=")[1]}/hqdefault.jpg`;
 }
-
 
 export default function RegisterVideo() {
     const formCadastro = useForm({
         initialValues: { titulo: "Frost punk", url: "https://www.youtube.com/watch?v=QsqatJxAUtk" }
     });
     const [formVisivel, setFormVisivel] = React.useState(false);
-
+   
     return (
         <StyledRegisterVideo>
             <button className="add-video" onClick={() => setFormVisivel(true)}>
@@ -48,11 +48,12 @@ export default function RegisterVideo() {
                     <form onSubmit={(evento) => {
                         evento.preventDefault();
                         console.log(formCadastro.values);
+                        
                         supabase.from("video").insert({
                             title: formCadastro.values.titulo,
                             url: formCadastro.values.url,
                             thumb: getThumbnail(formCadastro.values.url),
-                            playlist: "jogos",
+                            playlist: "Jogos",
                          })
                          .then((oqueveio) => {
                             console.log(oqueveio);

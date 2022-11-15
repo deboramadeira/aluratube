@@ -8,7 +8,7 @@ import { videoService } from "../src/components/services/videoService";
 function HomePage() {
     const service = videoService();
     const [valorDoFiltro, setValorDoFiltro] = React.useState("");
-    const [playlists, setPlaylists] = React.useState({});     // config.playlists
+    const [playlists, setPlaylists] = React.useState({}); 
 
     React.useEffect(() => {
         console.log("useEffect");
@@ -37,8 +37,8 @@ function HomePage() {
                 flex: 1,
 
             }}>
-                <Menu valorDoFiltro={valorDoFiltro} setValorDoFiltro={setValorDoFiltro}/>
-                <Header/>
+                <Menu valorDoFiltro={valorDoFiltro} setValorDoFiltro={setValorDoFiltro} />
+                <Header />
                 <Timeline searchValue={valorDoFiltro} playlists={playlists}>
                     Conteúdo
                 </Timeline>
@@ -46,12 +46,13 @@ function HomePage() {
             </div>
         </>
     );
-        }
+}
 
 export default HomePage
 
 
 const StyledHeader = styled.div`
+
     img {
         width: 80px;
         height: 80px;
@@ -77,7 +78,7 @@ height: 230px;
 function Header() {
     return (
         <StyledHeader>
-            <StyledBanner/>
+            <StyledBanner />
             <section className="user-info">
                 <img src={`https://github.com/${config.github}.png`} />
                 <div>
@@ -93,10 +94,10 @@ function Header() {
     )
 }
 
-function Timeline({searchValue, ...props}) {
-    
+function Timeline({ searchValue, ...props }) {
+
     const playlistNames = Object.keys(props.playlists);
-    return(
+    return (
 
         <StyledTimeline>
             {playlistNames.map((playlistName) => {
@@ -111,16 +112,16 @@ function Timeline({searchValue, ...props}) {
                                 const searchValueNormalized = searchValue.toLowerCase();
                                 return titleNormalized.includes(searchValueNormalized)
                             })
-                            .map((video) => {
-                                return (
-                                    <a key={video.url} href={video.url}>
-                                        <img src={video.thumb} />
-                                        <span>
-                                            {video.title}
-                                        </span>
-                                    </a>
-                                )
-                            })}
+                                .map((video) => {
+                                    return (
+                                        <a key={video.url} href={video.url}>
+                                            <img src={video.thumb} />
+                                            <span>
+                                                {video.title}
+                                            </span>
+                                        </a>
+                                    )
+                                })}
                         </div>
                     </section>
                 )
